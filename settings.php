@@ -24,6 +24,10 @@ $conf = array(
   'login' => 'admin',
   'password' => '123',
   'admin_mail' => 'sin@kubsu.ru',
+   'db_host' => 'localhost',
+   'db_name' => 'u82197',
+    'db_user' => 'u82197',
+    'db_psw'  => '6410666',
 );
 
 // Определения ресурсов для диспатчера.
