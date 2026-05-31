@@ -7,7 +7,8 @@ define('DISPLAY_ERRORS', 1);
 // публично доступной директории из соображений безопасности.
 
 // Папки со скриптами и модулями.
-define('INCLUDE_PATH', './scripts' . PATH_SEPARATOR . './modules');
+define('INCLUDE_PATH',  './modules');
+// './scripts' . PATH_SEPARATOR .
 
 // Храним настройки в массиве чтоб легче было смотреть (print_r),
 // хранить (serialize), оверрайдить и не плодить глобалов.
