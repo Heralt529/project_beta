@@ -1,6 +1,6 @@
 <?php
 include('./settings.php');
-include('./db.php');
+
 
 // Выключаем отображение ошибок после отладки.
 ini_set('display_errors', DISPLAY_ERRORS);
@@ -13,6 +13,7 @@ ini_set('include_path', INCLUDE_PATH);
 
 
 include('init.php');
+include('./db.php');
 
 $request = array(
   'url' => isset($_GET['q']) ? $_GET['q'] : '',
