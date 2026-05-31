@@ -8,15 +8,31 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ffce85 0%, #ff9900 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
         .form-container {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 0 auto;
             background: #fff;
-            border-radius: 10px;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #ff9900;
+            margin-bottom: 30px;
+            font-size: 28px;
         }
         .form-group {
             margin-bottom: 20px;
@@ -31,7 +47,7 @@
             width: 100%;
             padding: 12px 15px;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             font-family: inherit;
             font-size: 16px;
             transition: border-color 0.3s;
@@ -74,7 +90,7 @@
         }
         fieldset {
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            border-radius: 10px;
             padding: 15px;
             margin-bottom: 20px;
         }
@@ -90,7 +106,7 @@
             color: #fff;
             border: none;
             padding: 14px 30px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
@@ -140,7 +156,7 @@
         .auth-info {
             background: #e8f4fd;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 20px;
             text-align: center;
         }
@@ -148,180 +164,144 @@
             background: #dc3545;
             color: white;
             border: none;
-            padding: 5px 15px;
-            border-radius: 5px;
+            padding: 8px 20px;
+            border-radius: 8px;
             cursor: pointer;
             margin-left: 10px;
+            font-size: 14px;
         }
         .nav-links-extra {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-bottom: 30px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
         }
         .nav-links-extra a {
             color: #ff9900;
             text-decoration: none;
+            font-weight: 500;
         }
-        <?php if (!empty($c['is_authenticated'])): ?>
+        .nav-links-extra a:hover {
+            text-decoration: underline;
+        }
         .profile-data {
             background: #f8f9fa;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-bottom: 20px;
         }
-        <?php endif; ?>
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <h1 style="text-align: center; color: #ff9900; margin-bottom: 30px;">Заявка на участие в мероприятии</h1>
-            
-            <?php if (!empty($c['messages'])): ?>
-                <?php foreach ($c['messages'] as $msg): ?>
-                    <?php echo $msg; ?>
-                <?php endforeach; ?>
-            <?php endif; ?>
-            
-            <?php if (!empty($c['is_authenticated'])): ?>
-                <div class="auth-info">
-                    <i class="fas fa-user"></i> Вы вошли как <strong><?php echo htmlspecialchars($c['username']); ?></strong>
-                    <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
-                </div>
-            <?php endif; ?>
-            
-            <div id="formMessage"></div>
-            
-            <form id="mainForm" method="POST" action="<?php echo url('api'); ?>">
-                <div class="form-group">
-                    <label for="name">ФИО *</label>
-                    <input type="text" id="name" name="name" class="form-control" required>
-                    <span class="error-message" id="nameError"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phone">Телефон</label>
-                    <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX">
-                    <span class="error-message" id="phoneError"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="example@mail.com">
-                    <span class="error-message" id="emailError"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label for="birthdate">Дата рождения</label>
-                    <input type="date" id="birthdate" name="birthdate" class="form-control">
-                    <span class="error-message" id="birthdateError"></span>
-                </div>
-                
-                <div class="form-group">
-                    <label>Пол *</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="sex" value="male"> Мужской</label>
-                        <label><input type="radio" name="sex" value="female"> Женский</label>
-                    </div>
-                    <span class="error-message" id="sexError"></span>
-                </div>
-                
-                <fieldset id="languagesFieldset">
-                    <legend>Любимый язык программирования *</legend>
-                    <div class="checkbox-group" id="languagesGroup">
-                        <?php
-                        $languages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskel', 'Clojure', 'Prolog', 'Scala', 'Go'];
-                        foreach ($languages as $lang): ?>
-                        <label><input type="checkbox" name="languages[]" value="<?php echo $lang; ?>"> <?php echo $lang; ?></label>
-                        <?php endforeach; ?>
-                    </div>
-                    <span class="error-message" id="languagesError"></span>
-                </fieldset>
-                
-                <div class="form-group">
-                    <label for="biography">Биография</label>
-                    <textarea id="biography" name="biography" class="form-control" rows="5"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label><input type="checkbox" name="contract" value="1" id="contract"> Я ознакомлен(а) с условиями *</label>
-                    <span class="error-message" id="contractError"></span>
-                </div>
-                
-                <button type="submit" class="btn-submit" id="submitBtn">
-                    <span id="submitText">Отправить заявку</span>
-                    <span id="submitSpinner" style="display: none;"></span>
-                </button>
-            </form>
-            
-            <div class="nav-links-extra">
-                <a href="/">← На главную</a>
-                <?php if (empty($c['is_authenticated'])): ?>
-                <a href="<?php echo url('login'); ?>">Войти</a>
-                <?php endif; ?>
+    <div class="form-container">
+        <h1><i class="fas fa-gift"></i> Заявка на участие в мероприятии</h1>
+        
+        <div id="formMessage"></div>
+        
+        <div id="authSection"></div>
+        
+        <form id="mainForm" method="POST" action="?q=api">
+            <div class="form-group">
+                <label for="name">ФИО *</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+                <span class="error-message" id="nameError"></span>
             </div>
+            
+            <div class="form-group">
+                <label for="phone">Телефон</label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX">
+                <span class="error-message" id="phoneError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="example@mail.com">
+                <span class="error-message" id="emailError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="birthdate">Дата рождения</label>
+                <input type="date" id="birthdate" name="birthdate" class="form-control">
+                <span class="error-message" id="birthdateError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label>Пол *</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="sex" value="male"> Мужской</label>
+                    <label><input type="radio" name="sex" value="female"> Женский</label>
+                </div>
+                <span class="error-message" id="sexError"></span>
+            </div>
+            
+            <fieldset id="languagesFieldset">
+                <legend>Любимый язык программирования *</legend>
+                <div class="checkbox-group" id="languagesGroup">
+                    <?php
+                    $languages = ['Pascal', 'C', 'C++', 'JavaScript', 'PHP', 'Python', 'Java', 'Haskel', 'Clojure', 'Prolog', 'Scala', 'Go'];
+                    foreach ($languages as $lang): ?>
+                    <label><input type="checkbox" name="languages[]" value="<?php echo $lang; ?>"> <?php echo $lang; ?></label>
+                    <?php endforeach; ?>
+                </div>
+                <span class="error-message" id="languagesError"></span>
+            </fieldset>
+            
+            <div class="form-group">
+                <label for="biography">Биография</label>
+                <textarea id="biography" name="biography" class="form-control" rows="5"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label><input type="checkbox" name="contract" value="1" id="contract"> Я ознакомлен(а) с условиями *</label>
+                <span class="error-message" id="contractError"></span>
+            </div>
+            
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span id="submitText">Отправить заявку</span>
+                <span id="submitSpinner" style="display: none;" class="spinner"></span>
+            </button>
+        </form>
+        
+        <div class="nav-links-extra">
+            <a href="?q=">← На главную</a>
+            <a href="?q=login" id="loginLink">Войти</a>
         </div>
     </div>
     
     <script>
     (function() {
-        // Проверяем, включен ли JavaScript
-        document.documentElement.classList.add('js-enabled');
-        
         const form = document.getElementById('mainForm');
         const submitBtn = document.getElementById('submitBtn');
         const submitText = document.getElementById('submitText');
         const submitSpinner = document.getElementById('submitSpinner');
         const formMessage = document.getElementById('formMessage');
+        const authSection = document.getElementById('authSection');
         
-        // Функция очистки ошибок
-        function clearErrors() {
-            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
-            document.querySelectorAll('.form-control.error').forEach(el => el.classList.remove('error'));
-            document.getElementById('languagesFieldset')?.classList.remove('error');
-        }
-        
-        // Функция отображения ошибок
-        function displayErrors(errors) {
-            clearErrors();
-            for (const [field, message] of Object.entries(errors)) {
-                const errorSpan = document.getElementById(field + 'Error');
-                if (errorSpan) {
-                    errorSpan.textContent = message;
-                }
-                const input = document.querySelector(`[name="${field}"]`);
-                if (input) {
-                    input.classList.add('error');
-                }
-                if (field === 'languages') {
-                    document.getElementById('languagesFieldset')?.classList.add('error');
-                }
-                if (field === 'contract') {
-                    document.getElementById('contract')?.classList.add('error');
-                }
-            }
-        }
-        
-        // Функция показа сообщения
-        function showMessage(message, type) {
-            formMessage.innerHTML = `<div class="message ${type}">${message}</div>`;
-            formMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        
-        // Функция загрузки данных профиля (если авторизован)
-        <?php if (!empty($c['is_authenticated'])): ?>
-        async function loadProfile() {
-            try {
-                const response = await fetch('<?php echo url('api/profile'); ?>', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': 'Basic ' + btoa('<?php echo addslashes($c['username']); ?>:')
-                    }
-                });
-                
+        // Проверяем авторизацию через cookie сессии
+        function checkAuth() {
+            fetch('?q=api/profile', {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(response => {
                 if (response.ok) {
-                    const data = await response.json();
+                    return response.json();
+                } else if (response.status === 401) {
+                    return null;
+                }
+                return null;
+            })
+            .then(data => {
+                if (data && !data.error) {
+                    // Пользователь авторизован
+                    authSection.innerHTML = `
+                        <div class="auth-info">
+                            <i class="fas fa-user-circle"></i> Вы вошли как <strong>${data.name || data.login || 'пользователь'}</strong>
+                            <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                        </div>
+                    `;
                     // Заполняем форму данными
                     if (data.name) document.getElementById('name').value = data.name;
                     if (data.phone) document.getElementById('phone').value = data.phone;
@@ -339,23 +319,62 @@
                     }
                     document.getElementById('contract').checked = true;
                     document.getElementById('contract').disabled = true;
+                    
+                    // Меняем ссылку входа на выход
+                    const loginLink = document.getElementById('loginLink');
+                    if (loginLink) {
+                        loginLink.textContent = 'Личный кабинет';
+                        loginLink.href = '?q=profile';
+                    }
+                    
+                    // Обработчик выхода
+                    document.getElementById('logoutBtn').addEventListener('click', function() {
+                        fetch('?q=logout', { method: 'POST', credentials: 'same-origin' })
+                        .then(() => {
+                            window.location.href = '?q=form';
+                        });
+                    });
                 }
-            } catch (error) {
-                console.error('Ошибка загрузки профиля:', error);
+            })
+            .catch(() => {});
+        }
+        
+        checkAuth();
+        
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.querySelectorAll('.form-control.error').forEach(el => el.classList.remove('error'));
+            document.getElementById('languagesFieldset')?.classList.remove('error');
+        }
+        
+        function displayErrors(errors) {
+            clearErrors();
+            for (const [field, message] of Object.entries(errors)) {
+                const errorSpan = document.getElementById(field + 'Error');
+                if (errorSpan) {
+                    errorSpan.textContent = message;
+                }
+                const input = document.querySelector(`[name="${field}"]`);
+                if (input) {
+                    input.classList.add('error');
+                }
+                if (field === 'languages') {
+                    document.getElementById('languagesFieldset')?.classList.add('error');
+                }
             }
         }
-        loadProfile();
-        <?php endif; ?>
         
-        // Обработка отправки формы
+        function showMessage(message, type) {
+            formMessage.innerHTML = `<div class="message ${type}">${message}</div>`;
+            formMessage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
         if (form) {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
                 clearErrors();
                 formMessage.innerHTML = '';
                 
-                // Собираем данные формы
                 const formData = new FormData(form);
                 const languages = formData.getAll('languages[]');
                 
@@ -370,32 +389,22 @@
                     contract: formData.get('contract') || ''
                 };
                 
-                // Определяем метод (PUT для авторизованных, POST для новых)
-                <?php if (!empty($c['is_authenticated'])): ?>
-                const method = 'PUT';
-                const url = '<?php echo url('api/profile'); ?>';
-                <?php else: ?>
-                const method = 'POST';
-                const url = '<?php echo url('api'); ?>';
-                <?php endif; ?>
+                // Определяем метод по наличию auth-info (есть блок - значит авторизован)
+                const isAuth = document.getElementById('logoutBtn') !== null;
+                const method = isAuth ? 'PUT' : 'POST';
+                const url = isAuth ? '?q=api/profile' : '?q=api';
                 
-                // Показываем спиннер
                 submitBtn.disabled = true;
                 submitText.style.display = 'none';
                 submitSpinner.style.display = 'inline-block';
                 
                 try {
-                    const headers = {
-                        'Content-Type': 'application/json'
-                    };
-                    
-                    <?php if (!empty($c['is_authenticated'])): ?>
-                    headers['Authorization'] = 'Basic ' + btoa('<?php echo addslashes($c['username']); ?>:');
-                    <?php endif; ?>
-                    
                     const response = await fetch(url, {
                         method: method,
-                        headers: headers,
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        credentials: 'same-origin',
                         body: JSON.stringify(data)
                     });
                     
@@ -406,8 +415,11 @@
                         if (result.login && result.password) {
                             showMessage(`${result.message}<br>Логин: <strong>${result.login}</strong><br>Пароль: <strong>${result.password}</strong>`, 'success');
                         }
-                        if (!<?php echo json_encode(!empty($c['is_authenticated'])); ?>) {
+                        if (!isAuth) {
                             form.reset();
+                        } else {
+                            // Обновляем данные после обновления
+                            checkAuth();
                         }
                     } else if (result.errors) {
                         displayErrors(result.errors);
@@ -425,27 +437,10 @@
                 }
             });
         }
-        
-        // Выход из системы
-        const logoutBtn = document.getElementById('logoutBtn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', async function() {
-                try {
-                    await fetch('<?php echo url('logout'); ?>', { method: 'POST' });
-                    window.location.href = '<?php echo url('form'); ?>';
-                } catch (error) {
-                    window.location.href = '<?php echo url('form'); ?>';
-                }
-            });
-        }
     })();
     </script>
     
-    <!-- Fallback: если JS отключен, форма отправится обычным POST-запросом -->
     <noscript>
-        <style>
-            .js-only { display: none; }
-        </style>
         <div class="message info" style="margin-top: 20px;">
             <i class="fas fa-info-circle"></i> JavaScript отключен. Форма будет отправлена обычным способом.
         </div>
