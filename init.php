@@ -10,7 +10,13 @@
 function init($request = array(), $urlconf = array()) {
   // Массив HTTP-ответа.
   $response = array();
-
+//--------------------------------------------
+  session_start();
+    if (!empty($_SESSION['login'])) {
+        $request['user']['login'] = $_SESSION['login'];
+        $request['user']['uid']   = $_SESSION['uid'];
+    }
+//--------------------------------------------
   // Шаблон страницы по умолчанию.
   $template = 'page';
 
