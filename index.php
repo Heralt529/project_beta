@@ -1,5 +1,6 @@
 <?php
 include('./settings.php');
+include('./db.php');
 
 // Выключаем отображение ошибок после отладки.
 ini_set('display_errors', DISPLAY_ERRORS);
