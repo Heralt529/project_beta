@@ -29,9 +29,14 @@ $conf = array(
 // Определения ресурсов для диспатчера.
 $urlconf = array(
   '' => array('module' => 'front'),
+  '/^api$/' => array('module' => 'api'),
+  '/^api\/profile$/' => array('module' => 'api', 'auth' => 'auth_basic'),
+  '/^form$/' => array('module' => 'form_module'),
+  '/^login$/' => array('module' => 'login_module'),
+  '/^logout$/' => array('module' => 'logout'),
   '/^admin$/' => array('module' => 'admin', 'auth' => 'auth_basic'),
   '/^admin\/(\d+)$/' => array('module' => 'admin', 'auth' => 'auth_basic'),
-  '/^logout$/' => array('module' => 'logout'),
+);
 /*  '/^order\/(\d+)$/' => array('module' => 'order', 'auth' => 'auth_db_basic'),
   '/^order\/(\d+)\/add$/' => array('module' => 'order_add', 'auth' => 'auth_db_basic'),
   '/^order\/(\d+)\/add\/(\d+)$/' => array('module' => 'order_add', 'auth' => 'auth_db_basic'),
