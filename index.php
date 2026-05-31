@@ -1,7 +1,7 @@
 <?php
 
 include('./settings.php');
-
+var_dump($conf['db_user']); // посмотрим, что реально в массиве
 
 // Выключаем отображение ошибок после отладки.
 ini_set('display_errors', DISPLAY_ERRORS);
@@ -14,6 +14,9 @@ ini_set('include_path', INCLUDE_PATH);
 
 
 include('init.php');
+var_dump(conf('db_user')); // что возвращает функция
+die();
+
 include('./db.php');
 
 $request = array(
