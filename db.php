@@ -3,8 +3,7 @@
 
 
 global $db;
-var_dump(conf('db_host'), conf('db_name'), conf('db_user'), conf('db_psw'));
-exit;
+
 $db = new PDO('mysql:host=' . conf('db_host') . ';dbname=' . conf('db_name'), conf('db_user'), conf('db_psw'),
   array(PDO::MYSQL_ATTR_FOUND_ROWS => true, PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
 
