@@ -6,6 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -19,6 +20,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
         .login-container {
             background: white;
@@ -96,13 +98,13 @@
     <div class="login-container">
         <h1><i class="fas fa-gift"></i> Вход в личный кабинет</h1>
         
-        <?php if ($c['error']): ?>
+        <?php if (!empty($c['error'])): ?>
             <div class="error-message">
                 <i class="fas fa-exclamation-triangle"></i> Неверный логин или пароль
             </div>
         <?php endif; ?>
         
-        <form method="POST" action="<?php echo url('login'); ?>">
+        <form method="POST" action="?q=login">
             <div class="form-group">
                 <label>Логин</label>
                 <input type="text" name="login" required autofocus>
@@ -115,7 +117,7 @@
         </form>
         
         <div class="links">
-            <a href="<?php echo url('form'); ?>">← Вернуться к форме</a>
+            <a href="?q=form">← Вернуться к форме</a>
         </div>
     </div>
 </body>
