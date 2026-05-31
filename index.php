@@ -1,7 +1,6 @@
 <?php
 echo __FILE__ . '<br>';
 echo 'db_user = ' . (defined('DB_USER') ? DB_USER : conf('db_user'));
-exit;
 include('./settings.php');
 
 
